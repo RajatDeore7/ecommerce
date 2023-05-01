@@ -16,9 +16,11 @@ const userSchema = new mongoose.Schema({
   },
   feedback: {
     type: String,
+    required: true,
   },
-  rating: {
-    type: Number,
+  suject: {
+    type: String,
+    required: true,
   },
 });
 

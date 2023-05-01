@@ -66,13 +66,14 @@ router.post("/login", async (req, res) => {
 
 router.post("/feedback", async (req, res) => {
   try {
-    const { email, feedback, rating } = req.body;
+    const { email, feedback, subject, fullName } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) return res.status(400).send("User not found.");
 
     user.feedback = feedback;
-    user.rating = rating;
+    user.subject = subject;
+    user.fullName = fullName;
     await user.save();
 
     res.send("Feedback submitted successfully.");
