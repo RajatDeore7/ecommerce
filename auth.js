@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("./user");
+const Feedback = require("./feedback");
 
 router.post("/signup", async (req, res) => {
   const { email, fullName, password } = req.body;
@@ -68,15 +69,15 @@ router.post("/feedback", async (req, res) => {
   try {
     const { email, feedback, subject, fullName } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).send("User not found.");
+    const newFeedback = new Feedback({
+      email,
+      fullName,
+      subject,
+      feedback,
+    });
+    await newFeedback.save();
 
-    user.feedback = feedback;
-    user.subject = subject;
-    user.fullName = fullName;
-    await user.save();
-
-    res.send("Feedback submitted successfully.");
+    res.status(200).send("Feedback submitted successfully.");
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
